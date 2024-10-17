@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scroll to Play Image Sequence</title>
+  <style>
+    body, html {
+      height: 400vh; /* Increase this to slow down playback */
+      margin: 0;
+    }
+    .image-container {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    body::-webkit-scrollbar {
+     display: none;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="image-container">
+    <img id="scrollImage" src="image_sequence/0.jpg" alt="Scrolling Image">
+  </div>
+
+  <script>
+    const totalFrames = 2264;
+    const imagePath = 'image_sequence/'; 
+    const imageExtension = '.jpg'; 
+    const imageElement = document.getElementById('scrollImage');
+    const scrollFactor = 2;
+
+    // Wait until the page is loaded
+    window.addEventListener('load', () => {
+      const totalScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+      window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY;
+        const scrollFraction = scrollPosition / totalScrollHeight;
+
+        const frameIndex = Math.min(
+          totalFrames - 1,
+          Math.floor(scrollFraction * totalFrames / scrollFactor)
+        );
+
+        imageElement.src = `${imagePath}${frameIndex + 1}${imageExtension}`;
+      });
+    });
+  </script>
+</body>
+</html>
